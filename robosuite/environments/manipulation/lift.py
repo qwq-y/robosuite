@@ -11,6 +11,8 @@ from robosuite.utils.observables import Observable, sensor
 from robosuite.utils.placement_samplers import UniformRandomSampler
 from robosuite.utils.transform_utils import convert_quat
 
+from robosuite.models.objects import BananaObject
+
 
 class Lift(ManipulationEnv):
     """
@@ -176,6 +178,8 @@ class Lift(ManipulationEnv):
         renderer="mjviewer",
         renderer_config=None,
         seed=None,
+        use_banana=False,
+        **kwargs
     ):
         # settings for table top
         self.table_full_size = table_full_size
@@ -191,6 +195,8 @@ class Lift(ManipulationEnv):
 
         # object placement initializer
         self.placement_initializer = placement_initializer
+
+        self.use_banana = use_banana
 
         super().__init__(
             robots=robots,
@@ -219,6 +225,7 @@ class Lift(ManipulationEnv):
             renderer=renderer,
             renderer_config=renderer_config,
             seed=seed,
+            **kwargs
         )
 
     def reward(self, action=None):
@@ -292,42 +299,49 @@ class Lift(ManipulationEnv):
         # Arena always gets set to zero origin
         mujoco_arena.set_origin([0, 0, 0])
 
-        # initialize objects of interest
-        tex_attrib = {
-            "type": "cube",
-        }
-        mat_attrib = {
-            "texrepeat": "1 1",
-            "specular": "0.4",
-            "shininess": "0.1",
-        }
-        redwood = CustomMaterial(
-            texture="WoodRed",
-            tex_name="redwood",
-            mat_name="redwood_mat",
-            tex_attrib=tex_attrib,
-            mat_attrib=mat_attrib,
-        )
-        self.cube = BoxObject(
-            name="cube",
-            size_min=[0.020, 0.020, 0.020],  # [0.015, 0.015, 0.015],
-            size_max=[0.022, 0.022, 0.022],  # [0.018, 0.018, 0.018])
-            rgba=[1, 0, 0, 1],
-            material=redwood,
-            rng=self.rng,
-        )
+        if self.use_banana:
+            self.object = BananaObject(name="banana")
+
+        else:
+            # initialize objects of interest
+            tex_attrib = {
+                "type": "cube",
+            }
+            mat_attrib = {
+                "texrepeat": "1 1",
+                "specular": "0.4",
+                "shininess": "0.1",
+            }
+            redwood = CustomMaterial(
+                texture="WoodRed",
+                tex_name="redwood",
+                mat_name="redwood_mat",
+                tex_attrib=tex_attrib,
+                mat_attrib=mat_attrib,
+            )
+            self.box = BoxObject(
+                name="cube",
+                size_min=[0.020, 0.020, 0.020],  # [0.015, 0.015, 0.015],
+                size_max=[0.022, 0.022, 0.022],  # [0.018, 0.018, 0.018])
+                rgba=[1, 0, 0, 1],
+                material=redwood,
+                rng=self.rng,
+            )
+            self.object = self.box
+        self.cube = self.object
 
         # Create placement initializer
         if self.placement_initializer is not None:
             self.placement_initializer.reset()
-            self.placement_initializer.add_objects(self.cube)
+            self.placement_initializer.add_objects(self.object)
         else:
             self.placement_initializer = UniformRandomSampler(
                 name="ObjectSampler",
-                mujoco_objects=self.cube,
+                mujoco_objects=self.object,
                 x_range=[-0.03, 0.03],
-                y_range=[-0.03, 0.03],
+                y_range=[-0.03, 0.03], 
                 rotation=None,
+                # rotation=[0, 0],
                 ensure_object_boundary_in_range=False,
                 ensure_valid_placement=True,
                 reference_pos=self.table_offset,
@@ -339,7 +353,7 @@ class Lift(ManipulationEnv):
         self.model = ManipulationTask(
             mujoco_arena=mujoco_arena,
             mujoco_robots=[robot.robot_model for robot in self.robots],
-            mujoco_objects=self.cube,
+            mujoco_objects=self.object,
         )
 
     def _setup_references(self):

@@ -1,0 +1,45 @@
+{
+  "mesh_path": "/home/qwqy/Documents/RL-GSBridge/robosuite/robosuite/models/assets/objects/banana/banana_collision.obj",
+  "unit_to_meter": 1.0,
+  "aabb_extents_m": [
+    1.523208,
+    2.225276,
+    2.9679450000000003
+  ],
+  "principal_extents_m": [
+    0.7304854914297816,
+    2.042530944562406,
+    3.569291065080889
+  ],
+  "longest_axis_index": 2,
+  "current_longest_length_m": 3.569291065080889,
+  "target_length_m": 0.24,
+  "suggest_mesh_scale": [
+    0.06724024340518753,
+    0.06724024340518753,
+    0.06724024340518753
+  ],
+  "com_local_m_before_scale": [
+    0.5224014123646816,
+    1.7582243415320553,
+    2.6422278969900717
+  ],
+  "com_local_m_after_scale": [
+    0.035126398122614935,
+    0.11822343268554096,
+    0.17766404692558918
+  ],
+  "volume_m3": 1.0443753742318853,
+  "density_kg_per_m3": 500.0,
+  "estimated_mass_kg": 522.1876871159427,
+  "principal_axes_note": "principal extents are AABB extents after rotating to principal (inertia/PCA) frame; close to OBB",
+  "used_inertia_for_axes": true,
+  "warnings": [],
+  "align_quaternion_wxyz": [
+    0.7723895934306871,
+    0.0,
+    -0.5042807042063769,
+    -0.3861544863459422
+  ],
+  "align_to_axis": "x"
+}

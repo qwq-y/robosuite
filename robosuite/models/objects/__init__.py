@@ -22,3 +22,5 @@ from .primitive import *
 from .composite import *
 from .composite_body import *
 from .group import *
+
+from .banana_object import BananaObject
