@@ -1,0 +1,37 @@
+<mujoco model="banana">
+  <asset>
+    <mesh name="banana_visual"    file="banana_visual.obj" scale="0.0674 0.0674 0.0674"/>
+    <mesh name="banana_collision" file="banana_collision.obj" scale="0.0674 0.0674 0.0674"/>
+  </asset>
+
+  <worldbody>
+    <body>
+      <body name="object" pos="0 0 0.08" quat="1 0 0 0">
+        <joint name="object_free_joint" type="free"/>
+
+        <geom type="mesh" mesh="banana_visual"
+              group="1" contype="0" conaffinity="0"
+              friction="0.8 0.01 0.001"
+              density="600"
+              solref="0.002 1"
+              solimp="0.9 0.95 0.001"/>
+
+        <geom type="mesh" mesh="banana_collision"
+              group="0"
+              friction="0.8 0.01 0.001"
+              density="600"
+              solref="0.002 1"
+              solimp="0.9 0.95 0.001"/>
+      </body>
+
+      <!-- <site name="bottom_site" pos="0 0 0.0773" size="0.005" rgba="0 1 0 1"/>
+      <site name="top_site"    pos="0 0 0.2770" size="0.005" rgba="0 0 1 1"/>
+      <site name="horizontal_radius_site" pos="0.1976 0 0" size="0.005" rgba="1 0 0 1"/> -->
+
+      <site name="bottom_site" pos="0 0 0.2770" size="0.005" rgba="0 1 0 1"/>
+      <site name="top_site"    pos="0 0 0.0773" size="0.005" rgba="0 0 1 1"/>
+      <site name="horizontal_radius_site" pos="0.1976 0 0" size="0.005" rgba="1 0 0 1"/>
+    </body>
+  </worldbody>
+</mujoco>
+
